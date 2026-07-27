@@ -2,7 +2,6 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build -w dashboard",
   "outputDirectory": "dashboard/dist",
-  "framework": null,
   "headers": [
     {
       "source": "/assets/(.*)",

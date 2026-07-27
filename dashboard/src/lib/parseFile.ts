@@ -105,9 +105,11 @@ async function parseExcel(file: File, fileName: string): Promise<ParsedData> {
   // First, try reading with raw headers to detect merged-cell layouts
   const rawRows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, defval: null });
 
-  // Detect if the first row has mostly empty headers (merged cells pattern)
-  const result = parseSheetIntelligently(rawRows, fileName);
-  if (result) return result;
+  // Try intelligent parsing for complex government/financial layouts
+  const smartResult = parseSheetIntelligently(rawRows, fileName);
+  if (smartResult && !hasGarbageColumns(smartResult.columns)) {
+    return smartResult;
+  }
 
   // Standard parse fallback
   const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: null });
@@ -117,71 +119,136 @@ async function parseExcel(file: File, fileName: string): Promise<ParsedData> {
 }
 
 /**
+ * Check if column names look like garbage (mostly numbers, or very short nonsense).
+ * If >40% of columns are pure numbers or ≤2 chars, the parsing probably went wrong.
+ */
+function hasGarbageColumns(columns: string[]): boolean {
+  if (columns.length < 3) return false;
+  const garbage = columns.filter((c) => {
+    const trimmed = c.trim();
+    // Pure numbers that aren't years
+    if (!isNaN(Number(trimmed))) {
+      const n = Number(trimmed);
+      if (!(Number.isInteger(n) && n >= 1900 && n <= 2099)) return true;
+    }
+    // Very short with slashes (like "4/", "6/")
+    if (trimmed.length <= 2 && /[\/\\]/.test(trimmed)) return true;
+    // Decimal numbers as column names (like "25270.58")
+    if (/^\d+\.\d+$/.test(trimmed)) return true;
+    return false;
+  });
+  return garbage.length > columns.length * 0.4;
+}
+
+/**
  * Intelligently parse a sheet that may have merged header cells or multi-row headers.
- * Detects patterns where XLSX generates "EMPTY", "__EMPTY", "__EMPTY_1" etc. column names.
+ * Handles government/finance Excel layouts with:
+ * - Title rows at the top
+ * - Multi-row merged headers
+ * - Year columns as numeric headers
+ * - Entity names in first column with numeric data in subsequent columns
  */
 function parseSheetIntelligently(rawRows: unknown[][], fileName: string): ParsedData | null {
   if (rawRows.length < 3) return null;
 
-  // Find the best header row — the one with the most non-empty cells
-  let bestHeaderIdx = 0;
-  let bestCount = 0;
+  // Strategy: find the real header row by looking for the row that:
+  // 1. Has multiple non-empty cells
+  // 2. Is followed by rows with a DIFFERENT pattern (data rows)
+  // 3. Isn't itself a data row (a data row has a mix of text + many numbers)
 
-  for (let i = 0; i < Math.min(5, rawRows.length); i++) {
+  let bestHeaderIdx = -1;
+  let bestScore = 0;
+
+  for (let i = 0; i < Math.min(10, rawRows.length); i++) {
     const row = rawRows[i] as unknown[];
     if (!row) continue;
-    const nonEmpty = row.filter((cell) => cell !== null && cell !== undefined && String(cell).trim() !== "").length;
-    if (nonEmpty > bestCount) {
-      bestCount = nonEmpty;
+
+    const nonEmpty = row.filter((cell) => cell !== null && cell !== undefined && String(cell).trim() !== "");
+    if (nonEmpty.length < 2) continue;
+
+    const textCells = nonEmpty.filter((cell) => isNaN(Number(cell)));
+    const numCells = nonEmpty.filter((cell) => !isNaN(Number(cell)));
+
+    // A good header row has mostly text OR is all years (4-digit numbers 1900-2099)
+    const yearCells = numCells.filter((c) => {
+      const n = Number(c);
+      return Number.isInteger(n) && n >= 1900 && n <= 2099;
+    });
+
+    // Score: penalize rows that mix text with non-year numbers (those are data rows)
+    // A real header: "Particulars | 1990 | 1991 | 1992 ..." → text + years = GOOD
+    // A data row: "APT | 782 | 671 | 25270 ..." → text + random numbers = BAD
+    const nonYearNums = numCells.length - yearCells.length;
+    const isLikelyDataRow = nonYearNums > 2 && textCells.length > 0 && nonYearNums >= textCells.length;
+
+    if (isLikelyDataRow) continue; // Skip — this is a data row, not a header
+
+    // Score: text cells + year cells (both are valid header content)
+    const score = (textCells.length + yearCells.length) * 2 + nonEmpty.length;
+
+    // Bonus: first row after title rows (row 0 often is the title)
+    const titleBonus = (i >= 1 && i <= 3) ? 3 : 0;
+
+    if (score + titleBonus > bestScore) {
+      bestScore = score + titleBonus;
       bestHeaderIdx = i;
     }
   }
 
-  // Check if there's a secondary header row (common in government reports)
-  const headerRow = rawRows[bestHeaderIdx] as unknown[];
-  if (!headerRow || bestCount < 2) return null;
+  if (bestHeaderIdx < 0) return null;
 
-  // Build column names: combine header row cells, handling nulls
+  const headerRow = rawRows[bestHeaderIdx] as unknown[];
+  if (!headerRow) return null;
+
+  // Build headers from the identified header row
   const headers: string[] = [];
   let lastNonEmpty = "";
 
+  const subHeaderRow = rawRows[bestHeaderIdx + 1] as unknown[] | undefined;
+
   for (let i = 0; i < headerRow.length; i++) {
     const cell = headerRow[i];
-    if (cell !== null && cell !== undefined && String(cell).trim() !== "") {
-      lastNonEmpty = String(cell).trim();
-      headers.push(lastNonEmpty);
-    } else {
-      // For blank cells (merged regions), try the secondary header row
-      const secondaryRow = rawRows[bestHeaderIdx + 1] as unknown[] | undefined;
-      const secondaryCell = secondaryRow?.[i];
-      if (secondaryCell !== null && secondaryCell !== undefined && String(secondaryCell).trim() !== "") {
-        headers.push(String(secondaryCell).trim());
+    const cellStr = cell !== null && cell !== undefined ? String(cell).trim() : "";
+
+    if (cellStr !== "") {
+      lastNonEmpty = cellStr;
+      // Check if sub-header row adds specificity (text, not numbers)
+      const subCell = subHeaderRow?.[i];
+      const subStr = subCell !== null && subCell !== undefined ? String(subCell).trim() : "";
+      if (subStr && subStr !== cellStr && isNaN(Number(subStr))) {
+        headers.push(`${cellStr} ${subStr}`);
       } else {
-        // Use parent + index pattern
-        headers.push(lastNonEmpty ? `${lastNonEmpty}_${i}` : `Column_${i + 1}`);
+        headers.push(cellStr);
+      }
+    } else {
+      // Empty cell — try sub-header row or use context
+      const subCell = subHeaderRow?.[i];
+      const subStr = subCell !== null && subCell !== undefined ? String(subCell).trim() : "";
+
+      if (subStr && isNaN(Number(subStr))) {
+        headers.push(lastNonEmpty ? `${lastNonEmpty} ${subStr}` : subStr);
+      } else if (lastNonEmpty) {
+        headers.push(`${lastNonEmpty} ${headers.filter((h) => h.startsWith(lastNonEmpty)).length + 1}`);
+      } else {
+        headers.push(`Column ${i + 1}`);
       }
     }
   }
 
-  // Parse data rows (skip header rows)
-  const dataStartIdx = bestHeaderIdx + 1;
-  // Check if the row after header is also a sub-header (non-numeric in columns that should be numeric)
-  const secondRow = rawRows[dataStartIdx] as unknown[] | undefined;
-  let skipSubHeader = false;
-  if (secondRow) {
-    const numericCells = secondRow.filter((c) => c !== null && !isNaN(Number(c))).length;
-    if (numericCells < secondRow.filter((c) => c !== null).length * 0.3) {
-      skipSubHeader = true;
+  // Determine data start: skip sub-header rows that are text
+  let dataStartIdx = bestHeaderIdx + 1;
+  if (subHeaderRow) {
+    const subNonNull = subHeaderRow.filter((c) => c !== null && c !== undefined && String(c).trim() !== "");
+    const subNumeric = subNonNull.filter((c) => !isNaN(Number(c)));
+    if (subNonNull.length > 0 && subNumeric.length < subNonNull.length * 0.5) {
+      dataStartIdx = bestHeaderIdx + 2;
     }
   }
 
-  const actualDataStart = skipSubHeader ? dataStartIdx + 1 : dataStartIdx;
   const rows: Record<string, unknown>[] = [];
-
-  for (let i = actualDataStart; i < rawRows.length; i++) {
+  for (let i = dataStartIdx; i < rawRows.length; i++) {
     const raw = rawRows[i] as unknown[];
     if (!raw) continue;
-    // Skip completely empty rows
     const nonEmpty = raw.filter((c) => c !== null && c !== undefined && String(c).trim() !== "").length;
     if (nonEmpty < 2) continue;
 
@@ -199,10 +266,7 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
 
   if (rows.length === 0) return null;
 
-  // Deduplicate column names
   const uniqueHeaders = deduplicateHeaders(headers);
-
-  // Remap rows to use deduplicated headers
   const cleanedRows = rows.map((row) => {
     const newRow: Record<string, unknown> = {};
     headers.forEach((h, i) => {
@@ -216,7 +280,7 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
 
 /**
  * Clean parsed data by:
- * 1. Renaming "EMPTY", "__EMPTY", "__EMPTY_N" columns to meaningful names
+ * 1. Renaming "EMPTY", "__EMPTY", "__EMPTY_N" columns to meaningful names based on content
  * 2. Removing columns that are entirely null
  * 3. Stripping leading/trailing whitespace from string values
  */
@@ -254,11 +318,35 @@ function cleanParsedData(data: ParsedData): ParsedData {
         columnMapping.set(col, newName);
         cleanedColumns.push(newName);
       } else {
-        // Keep with a cleaner name: "Value_1", "Value_2" etc.
-        const idx = cleanedColumns.filter((c) => c.startsWith("Value_")).length + 1;
-        const newName = `Value_${idx}`;
-        columnMapping.set(col, newName);
-        cleanedColumns.push(newName);
+        // Infer a better name based on content type
+        const numCount = sampleValues.filter((v) => !isNaN(Number(v))).length;
+        const isNumeric = numCount > sampleValues.length * 0.7;
+        const isText = !isNumeric;
+
+        if (isText) {
+          // Use the most common non-null string value pattern to name it
+          const firstVal = String(sampleValues[0]).trim();
+          if (firstVal.length > 2 && firstVal.length <= 30) {
+            // Try using it as a category label column
+            const idx = cleanedColumns.filter((c) => c.startsWith("Category")).length + 1;
+            const newName = idx === 1 ? "Category" : `Category_${idx}`;
+            columnMapping.set(col, newName);
+            cleanedColumns.push(newName);
+          } else {
+            const idx = cleanedColumns.filter((c) => c.startsWith("Label")).length + 1;
+            const newName = idx === 1 ? "Label" : `Label_${idx}`;
+            columnMapping.set(col, newName);
+            cleanedColumns.push(newName);
+          }
+        } else {
+          // Numeric column — try to give context from adjacent named columns
+          const existingNamedCols = cleanedColumns.filter((c) => !c.startsWith("Amount") && !c.startsWith("Value"));
+          const contextName = existingNamedCols.length > 0 ? existingNamedCols[existingNamedCols.length - 1] : "";
+          const idx = cleanedColumns.filter((c) => c.startsWith("Amount")).length + 1;
+          const newName = contextName && idx === 1 ? `${contextName} Amount` : `Amount ${idx}`;
+          columnMapping.set(col, newName.trim());
+          cleanedColumns.push(newName.trim());
+        }
       }
     } else {
       columnMapping.set(col, col);
@@ -307,37 +395,103 @@ function deduplicateHeaders(headers: string[]): string[] {
 }
 
 async function parsePDF(file: File, fileName: string): Promise<ParsedData> {
-  // PDF table extraction: attempt to detect table structures
-  // Uses a simple text-line approach for tabular PDFs
   const text = await extractPDFText(file);
-  const lines = text.split("\n").filter((l) => l.trim().length > 0);
+  const lines = text.split("\n").map((l) => l.trim()).filter((l) => l.length > 0);
 
   if (lines.length < 2) {
-    throw new Error("Could not extract tabular data from PDF. The file may not contain structured tables.");
+    throw new Error(
+      "Could not extract tabular data from PDF. The file may be image-based or contain no readable tables. Try converting to Excel or CSV first."
+    );
   }
 
-  // Try to detect delimiter (tab, multiple spaces, or comma)
-  const headerLine = lines[0];
-  let delimiter = "\t";
-  if (!headerLine.includes("\t")) {
-    delimiter = headerLine.includes(",") ? "," : "  ";
+  // Strategy: find the most likely header row and parse the table
+  const parsed = parseTableFromLines(lines);
+  if (parsed) return { ...parsed, fileName };
+
+  throw new Error(
+    "Could not detect a table structure in the PDF. The file may not contain a standard table layout. Try converting to CSV or Excel first."
+  );
+}
+
+/**
+ * Attempt to detect a table structure from lines of text extracted from a PDF.
+ * Tries multiple strategies: tab-delimited, consistent spacing, comma-separated.
+ */
+function parseTableFromLines(lines: string[]): { rows: Record<string, unknown>[]; columns: string[] } | null {
+  // Strategy 1: Tab-delimited
+  const tabResult = tryDelimiter(lines, "\t");
+  if (tabResult) return tabResult;
+
+  // Strategy 2: Comma-delimited (but not inside parentheses)
+  const commaResult = tryDelimiter(lines, ",");
+  if (commaResult) return commaResult;
+
+  // Strategy 3: Pipe-delimited (common in some reports)
+  const pipeResult = tryDelimiter(lines, "|");
+  if (pipeResult) return pipeResult;
+
+  // Strategy 4: Multi-space delimited — detect consistent column positions
+  const spaceResult = trySpaceDelimited(lines);
+  if (spaceResult) return spaceResult;
+
+  // Strategy 5: Treat each line as a single-column entry (last resort)
+  if (lines.length >= 3) {
+    // Find a line that looks like a header (text content)
+    const headerIdx = lines.findIndex((l) => /[a-zA-Z]/.test(l) && l.split(/\s{2,}/).length >= 2);
+    if (headerIdx >= 0) {
+      const headers = lines[headerIdx].split(/\s{2,}/).map((h) => h.trim()).filter(Boolean);
+      if (headers.length >= 2) {
+        const rows: Record<string, unknown>[] = [];
+        for (let i = headerIdx + 1; i < lines.length; i++) {
+          const cells = lines[i].split(/\s{2,}/).map((c) => c.trim());
+          if (cells.length < 2) continue;
+          const row: Record<string, unknown> = {};
+          headers.forEach((h, idx) => {
+            const val = cells[idx] || null;
+            if (val !== null && val !== "" && !isNaN(Number(val.replace(/,/g, "")))) {
+              row[h] = Number(val.replace(/,/g, ""));
+            } else {
+              row[h] = val;
+            }
+          });
+          rows.push(row);
+        }
+        if (rows.length > 0) return { rows, columns: headers };
+      }
+    }
   }
 
-  const headers = headerLine.split(delimiter).map((h) => h.trim()).filter(Boolean);
-  if (headers.length < 2) {
-    throw new Error("Could not detect table columns in PDF. Try converting to CSV or Excel first.");
+  return null;
+}
+
+function tryDelimiter(lines: string[], delimiter: string): { rows: Record<string, unknown>[]; columns: string[] } | null {
+  // Check if most lines contain the delimiter
+  const linesWithDelimiter = lines.filter((l) => l.includes(delimiter));
+  if (linesWithDelimiter.length < lines.length * 0.4) return null;
+
+  // Find best header line (first line with the delimiter that has mostly text)
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    const parts = lines[i].split(delimiter).map((p) => p.trim()).filter(Boolean);
+    if (parts.length >= 2) {
+      headerIdx = i;
+      break;
+    }
   }
+  if (headerIdx < 0) return null;
+
+  const headers = lines[headerIdx].split(delimiter).map((h) => h.trim()).filter(Boolean);
+  if (headers.length < 2) return null;
 
   const rows: Record<string, unknown>[] = [];
-  for (let i = 1; i < lines.length; i++) {
+  for (let i = headerIdx + 1; i < lines.length; i++) {
     const cells = lines[i].split(delimiter).map((c) => c.trim());
-    if (cells.length < 2) continue;
+    if (cells.filter(Boolean).length < 2) continue;
     const row: Record<string, unknown> = {};
     headers.forEach((h, idx) => {
       const val = cells[idx] || null;
-      // Try to parse numbers
-      if (val !== null && !isNaN(Number(val)) && val !== "") {
-        row[h] = Number(val);
+      if (val !== null && val !== "" && !isNaN(Number(val.replace(/,/g, "")))) {
+        row[h] = Number(val.replace(/,/g, ""));
       } else {
         row[h] = val;
       }
@@ -345,41 +499,103 @@ async function parsePDF(file: File, fileName: string): Promise<ParsedData> {
     rows.push(row);
   }
 
-  if (rows.length === 0) {
-    throw new Error("PDF contained headers but no data rows could be parsed.");
+  if (rows.length < 1) return null;
+  return { rows, columns: headers };
+}
+
+function trySpaceDelimited(lines: string[]): { rows: Record<string, unknown>[]; columns: string[] } | null {
+  // Look for lines with consistent multi-space gaps
+  const spacedLines = lines.filter((l) => /\s{3,}/.test(l));
+  if (spacedLines.length < lines.length * 0.3) return null;
+
+  // Find header: first line with at least 2 space-separated groups
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(8, lines.length); i++) {
+    const parts = lines[i].split(/\s{3,}/).map((p) => p.trim()).filter(Boolean);
+    if (parts.length >= 2 && /[a-zA-Z]/.test(lines[i])) {
+      headerIdx = i;
+      break;
+    }
+  }
+  if (headerIdx < 0) return null;
+
+  const headers = lines[headerIdx].split(/\s{3,}/).map((h) => h.trim()).filter(Boolean);
+  if (headers.length < 2) return null;
+
+  const rows: Record<string, unknown>[] = [];
+  for (let i = headerIdx + 1; i < lines.length; i++) {
+    const cells = lines[i].split(/\s{3,}/).map((c) => c.trim());
+    if (cells.filter(Boolean).length < 2) continue;
+    const row: Record<string, unknown> = {};
+    headers.forEach((h, idx) => {
+      const val = cells[idx] || null;
+      if (val !== null && val !== "" && !isNaN(Number(val.replace(/,/g, "")))) {
+        row[h] = Number(val.replace(/,/g, ""));
+      } else {
+        row[h] = val;
+      }
+    });
+    rows.push(row);
   }
 
-  return { rows, columns: headers, fileName };
+  if (rows.length < 1) return null;
+  return { rows, columns: headers };
 }
 
 async function extractPDFText(file: File): Promise<string> {
-  // Basic PDF text extraction using binary analysis
-  // For production, consider pdf.js — this handles simple text PDFs
+  // Use pdf.js for proper PDF text extraction
+  const pdfjsLib = await import("pdfjs-dist");
+
+  // Set up worker
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "";
+
   const buffer = await file.arrayBuffer();
-  const bytes = new Uint8Array(buffer);
-  const text = new TextDecoder("latin1").decode(bytes);
+  const pdf = await pdfjsLib.getDocument({ data: buffer, useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;
 
-  // Extract text between BT (Begin Text) and ET (End Text) operators
-  const textBlocks: string[] = [];
-  const btPattern = /BT\s([\s\S]*?)ET/g;
-  let match: RegExpExecArray | null;
+  const allLines: string[] = [];
 
-  while ((match = btPattern.exec(text)) !== null) {
-    const block = match[1];
-    // Extract string literals in parentheses
-    const strPattern = /\(([^)]*)\)/g;
-    let strMatch: RegExpExecArray | null;
-    while ((strMatch = strPattern.exec(block)) !== null) {
-      textBlocks.push(strMatch[1]);
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    const page = await pdf.getPage(pageNum);
+    const textContent = await page.getTextContent();
+
+    // Group text items by Y position to reconstruct lines
+    const itemsByY = new Map<number, { x: number; text: string }[]>();
+
+    for (const item of textContent.items) {
+      if (!("str" in item) || !item.str.trim()) continue;
+      // Round Y to group items on same line (within 2px tolerance)
+      const y = Math.round(item.transform[5] / 2) * 2;
+      if (!itemsByY.has(y)) itemsByY.set(y, []);
+      itemsByY.get(y)!.push({ x: item.transform[4], text: item.str });
+    }
+
+    // Sort by Y (descending — PDF coordinates are bottom-up)
+    const sortedYs = [...itemsByY.keys()].sort((a, b) => b - a);
+
+    for (const y of sortedYs) {
+      const items = itemsByY.get(y)!.sort((a, b) => a.x - b.x);
+      // Join items on same line, using tab as separator when gaps are large
+      let line = "";
+      let lastX = -Infinity;
+      for (const item of items) {
+        const gap = item.x - lastX;
+        if (lastX > -Infinity && gap > 20) {
+          line += "\t";
+        } else if (lastX > -Infinity && gap > 5) {
+          line += "  ";
+        }
+        line += item.text;
+        lastX = item.x + item.text.length * 5; // rough char width estimate
+      }
+      if (line.trim()) allLines.push(line);
     }
   }
 
-  if (textBlocks.length === 0) {
-    // Fallback: try to find readable text
-    const readable = text.replace(/[^\x20-\x7E\n\r\t]/g, " ").replace(/\s{3,}/g, "\n").trim();
-    if (readable.length > 50) return readable;
-    throw new Error("Could not extract text from PDF. The file may be image-based or encrypted.");
+  if (allLines.length === 0) {
+    throw new Error(
+      "Could not extract text from this PDF. It may be image-based (scanned) or encrypted. Try converting to Excel or CSV first."
+    );
   }
 
-  return textBlocks.join("\n");
+  return allLines.join("\n");
 }

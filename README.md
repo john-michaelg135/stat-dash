@@ -18,6 +18,9 @@ stat-dash/
 cd pipeline
 npm install
 npm start
+
+npm run start -w pipeline
+
 ```
 
 ### Dashboard
@@ -26,4 +29,7 @@ npm start
 cd dashboard
 npm install
 npm run dev
+
+npm run dev -w dashboard
+
 ```

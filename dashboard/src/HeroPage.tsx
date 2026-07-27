@@ -1,8 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   Upload, FileSpreadsheet, FileJson, FileText,
   BarChart3, TrendingUp, Sparkles, ArrowRight,
-  CheckCircle2, AlertCircle,
+  CheckCircle2, AlertCircle, X, AlertTriangle,
 } from "lucide-react";
 
 interface HeroPageProps {
@@ -13,13 +13,18 @@ interface HeroPageProps {
 
 export default function HeroPage({ onFileLoaded, isProcessing, error }: HeroPageProps) {
   const [isDragOver, setIsDragOver] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const pendingFileRef = useRef<File | null>(null);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
-    if (file) onFileLoaded(file);
-  }, [onFileLoaded]);
+    if (file) {
+      pendingFileRef.current = file;
+      setShowDisclaimer(true);
+    }
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -31,10 +36,26 @@ export default function HeroPage({ onFileLoaded, isProcessing, error }: HeroPage
   const handleFileInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
-      if (file) onFileLoaded(file);
+      if (file) {
+        pendingFileRef.current = file;
+        setShowDisclaimer(true);
+      }
     },
-    [onFileLoaded]
+    []
   );
+
+  const handleDisclaimerAccept = useCallback(() => {
+    setShowDisclaimer(false);
+    if (pendingFileRef.current) {
+      onFileLoaded(pendingFileRef.current);
+      pendingFileRef.current = null;
+    }
+  }, [onFileLoaded]);
+
+  const handleDisclaimerCancel = useCallback(() => {
+    setShowDisclaimer(false);
+    pendingFileRef.current = null;
+  }, []);
 
   return (
     <div className="hero-page">
@@ -45,6 +66,7 @@ export default function HeroPage({ onFileLoaded, isProcessing, error }: HeroPage
         <div className="hero-logo">
           <BarChart3 size={28} />
           <span>StatDash</span>
+          <span className="hero-beta-badge">Beta</span>
         </div>
         <p className="hero-tagline">Instant analytics from any dataset</p>
       </header>
@@ -159,6 +181,37 @@ export default function HeroPage({ onFileLoaded, isProcessing, error }: HeroPage
           </p>
         </div>
       </main>
+
+      {showDisclaimer && (
+        <div className="disclaimer-overlay" onClick={handleDisclaimerCancel}>
+          <div className="disclaimer-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="disclaimer-close" onClick={handleDisclaimerCancel} aria-label="Close disclaimer">
+              <X size={20} />
+            </button>
+            <div className="disclaimer-icon">
+              <AlertTriangle size={36} />
+            </div>
+            <h2 className="disclaimer-title">Early Access Software</h2>
+            <p className="disclaimer-text">
+              StatDash is currently in <strong>beta</strong> and under active development.
+              Features may be incomplete, results may contain inaccuracies, and unexpected
+              behavior may occur.
+            </p>
+            <p className="disclaimer-text">
+              Please use this tool responsibly — do not rely solely on its outputs for
+              critical decisions. Always verify results against your source data.
+            </p>
+            <div className="disclaimer-actions">
+              <button className="disclaimer-btn-secondary" onClick={handleDisclaimerCancel}>
+                Cancel
+              </button>
+              <button className="disclaimer-btn-primary" onClick={handleDisclaimerAccept}>
+                I Understand, Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

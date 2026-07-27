@@ -10,6 +10,7 @@ import {
   Lightbulb, Database, Columns3, Filter, RotateCcw,
 } from "lucide-react";
 import { analyzeData, type AnalysisResult, type ChartRecommendation, type KPI, type Insight } from "./lib/analyzeData";
+import type { CleaningReport } from "./lib/cleanData";
 
 const CHART_COLORS = [
   "#4F7CFF", "#8B5CF6", "#06B6D4", "#22C55E", "#F59E0B",
@@ -19,11 +20,12 @@ const CHART_COLORS = [
 
 interface DynamicDashboardProps {
   analysis: AnalysisResult;
+  cleaningReport: CleaningReport | null;
   onReset: () => void;
 }
 
-export default function DynamicDashboard({ analysis, onReset }: DynamicDashboardProps) {
-  const { datasetName, totalRows, totalColumns, filters, rawData, columns: allColumns } = analysis;
+export default function DynamicDashboard({ analysis, cleaningReport, onReset }: DynamicDashboardProps) {
+  const { datasetName, totalRows, totalColumns, filters, rawData } = analysis;
 
   // Interactive filters state
   const [activeFilters, setActiveFilters] = useState<Record<string, string>>({});
@@ -47,14 +49,16 @@ export default function DynamicDashboard({ analysis, onReset }: DynamicDashboard
 
     if (filtered.length === 0) return analysis;
 
-    const colNames = allColumns.map((c) => c.name);
+    // Use original raw column names (from the first row), not the analyzed/unpivoted columns
+    const colNames = rawData.length > 0 ? Object.keys(rawData[0]) : [];
     return analyzeData(filtered, colNames, analysis.datasetName);
-  }, [analysis, rawData, activeFilters, hasFilters, allColumns]);
+  }, [analysis, rawData, activeFilters, hasFilters]);
 
   const { kpis, charts, insights, executiveSummary } = currentAnalysis;
   const filteredRows = hasFilters
     ? currentAnalysis.totalRows
     : totalRows;
+  const datasetContext = currentAnalysis.datasetContext;
 
   return (
     <div className="app-layout">
@@ -83,18 +87,21 @@ export default function DynamicDashboard({ analysis, onReset }: DynamicDashboard
 
       <main className="main-content">
 
-        {/* Filters */}
-        {filters.length > 0 && (
-          <div className="page-header">
-            <div>
-              <h2 className="page-title">Dashboard Overview</h2>
-              <p className="page-subtitle">
-                {hasFilters
-                  ? `Filtered: ${Object.entries(activeFilters).filter(([, v]) => v).map(([, v]) => v).join(" · ")} (${filteredRows} records)`
-                  : `All data — ${totalRows.toLocaleString()} records`
-                }
-              </p>
-            </div>
+        {/* Page Header + Filters */}
+        <div className="page-header">
+          <div>
+            <h2 className="page-title">Dashboard Overview</h2>
+            <p className="page-subtitle">
+              {hasFilters
+                ? `Filtered: ${Object.entries(activeFilters).filter(([, v]) => v).map(([col, v]) => {
+                    const f = filters.find((fi) => fi.column === col);
+                    return `${f?.label || col}: ${v}`;
+                  }).join(" · ")} — ${filteredRows} records`
+                : `All data — ${totalRows.toLocaleString()} records`
+              }
+            </p>
+          </div>
+          {filters.length > 0 && (
             <div className="filter-controls">
               {filters.map((f) => (
                 <div className="select-wrapper" key={f.column}>
@@ -116,8 +123,8 @@ export default function DynamicDashboard({ analysis, onReset }: DynamicDashboard
                 </button>
               )}
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* KPI Cards */}
         <section className="summary-grid">
@@ -133,7 +140,33 @@ export default function DynamicDashboard({ analysis, onReset }: DynamicDashboard
             <h3>Executive Summary</h3>
           </div>
           <p className="exec-summary-narrative">{executiveSummary}</p>
+          {datasetContext && (
+            <p className="exec-summary-context">{datasetContext}</p>
+          )}
         </section>
+
+        {/* Cleaning Report */}
+        {cleaningReport && cleaningReport.actions.some((a) => a.affectedRows > 0 || a.affectedColumns.length > 0) && (
+          <section className="card cleaning-report">
+            <div className="card-header">
+              <h3>Data Cleaning Report</h3>
+            </div>
+            <div className="cleaning-stats">
+              <span className="cleaning-stat">{cleaningReport.originalRows} → {cleaningReport.cleanedRows} rows</span>
+              {cleaningReport.duplicatesRemoved > 0 && (
+                <span className="cleaning-stat cleaning-stat--warn">{cleaningReport.duplicatesRemoved} duplicates removed</span>
+              )}
+            </div>
+            <ul className="cleaning-actions">
+              {cleaningReport.actions.filter((a) => a.affectedRows > 0 || a.affectedColumns.length > 0).map((action, i) => (
+                <li key={i} className="cleaning-action">
+                  <span className="cleaning-action-step">{action.step}</span>
+                  <span className="cleaning-action-desc">{action.description}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Insights */}
         {insights.length > 0 && (
@@ -181,7 +214,15 @@ function KPICard({ kpi }: { kpi: KPI }) {
       <div className="summary-card-icon">{iconMap[kpi.accent]}</div>
       <div className="summary-card-body">
         <span className="summary-card-value">{kpi.value}</span>
-        <span className="summary-card-label">{kpi.label}</span>
+        <span className="summary-card-label">
+          {kpi.label}
+          {kpi.tooltip && (
+            <span className="info-tooltip-wrap">
+              <Info size={12} className="info-icon" />
+              <span className="info-tooltip-text">{kpi.tooltip}</span>
+            </span>
+          )}
+        </span>
       </div>
     </div>
   );
@@ -198,7 +239,15 @@ function InsightCard({ insight }: { insight: Insight }) {
   return (
     <div className={`insight-card insight-${insight.type}`}>
       <div className="insight-icon">{iconMap[insight.type]}</div>
-      <p>{insight.text}</p>
+      <div className="insight-body">
+        <p>{insight.text}</p>
+        {insight.evidence && (
+          <span className="insight-evidence">{insight.evidence}</span>
+        )}
+      </div>
+      {insight.confidence && (
+        <span className={`confidence-badge confidence-${insight.confidence}`}>{insight.confidence}</span>
+      )}
     </div>
   );
 }

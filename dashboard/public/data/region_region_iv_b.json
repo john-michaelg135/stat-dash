@@ -1,0 +1,82 @@
+[
+  {
+    "province": "ORIENTAL MINDORO",
+    "project_count": 138,
+    "total_cost": 11253472248.52
+  },
+  {
+    "province": "OCCIDENTAL MINDORO",
+    "project_count": 101,
+    "total_cost": 8499750754.629997
+  },
+  {
+    "province": "ROMBLON",
+    "project_count": 76,
+    "total_cost": 5326193379.660001
+  },
+  {
+    "province": "MARINDUQUE",
+    "project_count": 68,
+    "total_cost": 4122795397.7400002
+  },
+  {
+    "province": "PALAWAN",
+    "project_count": 83,
+    "total_cost": 3924788471.510001
+  },
+  {
+    "province": "SURIGAO DEL SUR",
+    "project_count": 8,
+    "total_cost": 764845506.07
+  },
+  {
+    "province": "DAVAO DEL SUR",
+    "project_count": 5,
+    "total_cost": 218981285.35999998
+  },
+  {
+    "province": "RIZAL",
+    "project_count": 3,
+    "total_cost": 212598482.85
+  },
+  {
+    "province": "ISABELA",
+    "project_count": 4,
+    "total_cost": 146227575.92000002
+  },
+  {
+    "province": "ZAMBOANGA DEL NORTE",
+    "project_count": 3,
+    "total_cost": 131466748.38
+  },
+  {
+    "province": "GUIMARAS",
+    "project_count": 1,
+    "total_cost": 96495777.91
+  },
+  {
+    "province": "BUKIDNON",
+    "project_count": 3,
+    "total_cost": 83202738.74
+  },
+  {
+    "province": "CAMARINES SUR",
+    "project_count": 2,
+    "total_cost": 68597765.82
+  },
+  {
+    "province": "SURIGAO DEL NORTE",
+    "project_count": 1,
+    "total_cost": 62724802.09
+  },
+  {
+    "province": "QUEZON",
+    "project_count": 1,
+    "total_cost": 48997458.75
+  },
+  {
+    "province": "NORTHERN SAMAR",
+    "project_count": 1,
+    "total_cost": 3184912.74
+  }
+]

@@ -2,6 +2,7 @@
 node_modules/
 
 # Build output
+dist/
 dashboard/dist/
 
 # Pipeline intermediate files
@@ -9,8 +10,9 @@ dashboard/dist/
 pipeline/data/_temp_projects.json
 
 # Generated dashboard data (reproduced by pipeline)
-dashboard/public/data/*.parquet
-dashboard/public/data/*.json
+# NOTE: These are tracked in git for Vercel deployment (no pipeline runs on CI)
+# dashboard/public/data/*.parquet
+# dashboard/public/data/*.json
 
 # Raw data files (large, not needed in repo)
 flood_control.json

@@ -1,0 +1,32 @@
+[
+  {
+    "province": "DAVAO DEL SUR",
+    "project_count": 168,
+    "total_cost": 10256505031.739998
+  },
+  {
+    "province": "DAVAO ORIENTAL",
+    "project_count": 60,
+    "total_cost": 3305291592.7399993
+  },
+  {
+    "province": "DAVAO DE ORO",
+    "project_count": 58,
+    "total_cost": 3298020924.2000003
+  },
+  {
+    "province": "DAVAO DEL NORTE",
+    "project_count": 35,
+    "total_cost": 2006941715.6699998
+  },
+  {
+    "province": "DAVAO OCCIDENTAL",
+    "project_count": 22,
+    "total_cost": 1698039437.61
+  },
+  {
+    "province": "BATANGAS",
+    "project_count": 1,
+    "total_cost": 14699920.95
+  }
+]

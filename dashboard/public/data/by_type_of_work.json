@@ -1,0 +1,110 @@
+[
+  {
+    "type_of_work": "Construction of Flood Mitigation Structure",
+    "project_count": 6343,
+    "total_cost": 363216002122.2809,
+    "avg_cost": 57262494.42255729
+  },
+  {
+    "type_of_work": "Construction of Revetment",
+    "project_count": 733,
+    "total_cost": 49788997980.50002,
+    "avg_cost": 67924963.13847207
+  },
+  {
+    "type_of_work": "Construction of Slope Protection Structure",
+    "project_count": 739,
+    "total_cost": 44010163548.11996,
+    "avg_cost": 59553671.91897152
+  },
+  {
+    "type_of_work": "Rehabilitation / Major Repair of Flood Control Structure",
+    "project_count": 646,
+    "total_cost": 35033855770.629974,
+    "avg_cost": 54231974.877136186
+  },
+  {
+    "type_of_work": "Construction of Dike",
+    "project_count": 224,
+    "total_cost": 16146902892.300013,
+    "avg_cost": 72084387.91205363
+  },
+  {
+    "type_of_work": "Construction of Drainage Structure",
+    "project_count": 678,
+    "total_cost": 15948123028.29001,
+    "avg_cost": 23522305.351460192
+  },
+  {
+    "type_of_work": "Construction of Flood Mitigation Facility",
+    "project_count": 169,
+    "total_cost": 12018950909.529991,
+    "avg_cost": 71118052.71911237
+  },
+  {
+    "type_of_work": "Rehabilitation / Major Repair of Drainage Structure",
+    "project_count": 215,
+    "total_cost": 4658207029.710001,
+    "avg_cost": 21666079.207953494
+  },
+  {
+    "type_of_work": "Rehabilitation / Major Repair of Slope Protection Structure",
+    "project_count": 41,
+    "total_cost": 1907060433.2499995,
+    "avg_cost": 46513669.10365853
+  },
+  {
+    "type_of_work": "Rehabilitation / Major Repair of Flood Mitigation Facility",
+    "project_count": 12,
+    "total_cost": 929157416.35,
+    "avg_cost": 77429784.69583334
+  },
+  {
+    "type_of_work": "Construction of Groundsill",
+    "project_count": 12,
+    "total_cost": 723227879.8699999,
+    "avg_cost": 60268989.989166655
+  },
+  {
+    "type_of_work": "Construction of Retarding Basin",
+    "project_count": 5,
+    "total_cost": 426444954.40999997,
+    "avg_cost": 85288990.882
+  },
+  {
+    "type_of_work": "Construction of Spur Dike",
+    "project_count": 3,
+    "total_cost": 237071505.81,
+    "avg_cost": 79023835.27
+  },
+  {
+    "type_of_work": "Construction of Waterway",
+    "project_count": 2,
+    "total_cost": 216768875.5,
+    "avg_cost": 108384437.75
+  },
+  {
+    "type_of_work": "Upgrading of Drainage Structure",
+    "project_count": 1,
+    "total_cost": 99000000,
+    "avg_cost": 99000000
+  },
+  {
+    "type_of_work": "Construction of Cutoff Channel",
+    "project_count": 2,
+    "total_cost": 43904926.78,
+    "avg_cost": 21952463.39
+  },
+  {
+    "type_of_work": "Embankment",
+    "project_count": 1,
+    "total_cost": 14767348.1,
+    "avg_cost": 14767348.1
+  },
+  {
+    "type_of_work": "Repair/Maintenance of Flood Control Structures",
+    "project_count": 1,
+    "total_cost": 9898994.31,
+    "avg_cost": 9898994.31
+  }
+]

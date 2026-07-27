@@ -1,0 +1,87 @@
+[
+  {
+    "province": "CITY OF MANILA",
+    "project_count": 215,
+    "total_cost": 14459966445.269993
+  },
+  {
+    "province": "TAGUIG CITY",
+    "project_count": 68,
+    "total_cost": 5685573350.080001
+  },
+  {
+    "province": "QUEZON CITY",
+    "project_count": 141,
+    "total_cost": 5325560511.349999
+  },
+  {
+    "province": "PARAÑAQUE CITY",
+    "project_count": 88,
+    "total_cost": 3885009697.3300004
+  },
+  {
+    "province": "CALOOCAN CITY",
+    "project_count": 91,
+    "total_cost": 3862198020.7599998
+  },
+  {
+    "province": "MALABON CITY",
+    "project_count": 69,
+    "total_cost": 3631773078.2200007
+  },
+  {
+    "province": "MARIKINA CITY",
+    "project_count": 49,
+    "total_cost": 2900841347.55
+  },
+  {
+    "province": "VALENZUELA CITY",
+    "project_count": 50,
+    "total_cost": 2190907208.91
+  },
+  {
+    "province": "PASIG CITY",
+    "project_count": 77,
+    "total_cost": 1861619811.2199996
+  },
+  {
+    "province": "MAKATI CITY",
+    "project_count": 45,
+    "total_cost": 1682878404.2499995
+  },
+  {
+    "province": "NAVOTAS CITY",
+    "project_count": 53,
+    "total_cost": 1523844740.3499997
+  },
+  {
+    "province": "PASAY CITY",
+    "project_count": 24,
+    "total_cost": 1360950985.19
+  },
+  {
+    "province": "LAS PIÑAS CITY",
+    "project_count": 30,
+    "total_cost": 1165382819.72
+  },
+  {
+    "province": "MUNTINLUPA CITY",
+    "project_count": 21,
+    "total_cost": 1126499902.8700004
+  },
+  {
+    "province": "PATEROS",
+    "project_count": 21,
+    "total_cost": 1114935199.4899998
+  },
+  {
+    "province": "SAN JUAN CITY",
+    "project_count": 13,
+    "total_cost": 718465018.7399999
+  },
+  {
+    "province": "MANDALUYONG CITY",
+    "project_count": 2,
+    "total_cost": 70727809.08
+  }
+]

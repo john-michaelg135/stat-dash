@@ -1,0 +1,12 @@
+{
+  "total_projects": 9827,
+  "total_regions": 16,
+  "total_provinces": 98,
+  "total_municipalities": 1198,
+  "total_contract_cost": 545428505615.7417,
+  "total_abc": 560979311580.8912,
+  "avg_cost": 55503053.385137044,
+  "total_savings": 15550805965.149952,
+  "delayed_projects": 5459,
+  "avg_duration_days": null
+}

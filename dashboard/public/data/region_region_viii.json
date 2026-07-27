@@ -1,0 +1,32 @@
+[
+  {
+    "province": "LEYTE",
+    "project_count": 261,
+    "total_cost": 14157164150.540009
+  },
+  {
+    "province": "SOUTHERN LEYTE",
+    "project_count": 55,
+    "total_cost": 2758442443.2000003
+  },
+  {
+    "province": "SAMAR (WESTERN SAMAR)",
+    "project_count": 55,
+    "total_cost": 2522320052.6599994
+  },
+  {
+    "province": "NORTHERN SAMAR",
+    "project_count": 48,
+    "total_cost": 2018449431.59
+  },
+  {
+    "province": "BILIRAN",
+    "project_count": 73,
+    "total_cost": 1249814624.9399996
+  },
+  {
+    "province": "EASTERN SAMAR",
+    "project_count": 22,
+    "total_cost": 714865697.9799999
+  }
+]

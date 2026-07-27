@@ -1,0 +1,98 @@
+[
+  {
+    "region": "Region XI",
+    "project_count": 58,
+    "total_cost": 3272170022.63,
+    "delayed_count": 52
+  },
+  {
+    "region": "National Capital Region",
+    "project_count": 78,
+    "total_cost": 2882799415.51,
+    "delayed_count": 61
+  },
+  {
+    "region": "Cordillera Administrative Region",
+    "project_count": 65,
+    "total_cost": 2804635764.7400007,
+    "delayed_count": 53
+  },
+  {
+    "region": "Region V",
+    "project_count": 51,
+    "total_cost": 2436901229.2400002,
+    "delayed_count": 34
+  },
+  {
+    "region": "Region II",
+    "project_count": 46,
+    "total_cost": 2290069525.59,
+    "delayed_count": 25
+  },
+  {
+    "region": "Region IV-A",
+    "project_count": 57,
+    "total_cost": 2242419571.7999997,
+    "delayed_count": 37
+  },
+  {
+    "region": "Region VIII",
+    "project_count": 27,
+    "total_cost": 2161161408.9700003,
+    "delayed_count": 18
+  },
+  {
+    "region": "Region X",
+    "project_count": 32,
+    "total_cost": 1965387027.29,
+    "delayed_count": 27
+  },
+  {
+    "region": "Region III",
+    "project_count": 34,
+    "total_cost": 1663762266.2499998,
+    "delayed_count": 24
+  },
+  {
+    "region": "Region VII",
+    "project_count": 24,
+    "total_cost": 1625907891.1499999,
+    "delayed_count": 17
+  },
+  {
+    "region": "Region XIII",
+    "project_count": 20,
+    "total_cost": 1492438536.7299998,
+    "delayed_count": 15
+  },
+  {
+    "region": "Region VI",
+    "project_count": 32,
+    "total_cost": 1366306190.7799997,
+    "delayed_count": 28
+  },
+  {
+    "region": "Region IV-B",
+    "project_count": 31,
+    "total_cost": 1296734428.2899997,
+    "delayed_count": 20
+  },
+  {
+    "region": "Region XII",
+    "project_count": 26,
+    "total_cost": 1241190513.2000003,
+    "delayed_count": 14
+  },
+  {
+    "region": "Region IX",
+    "project_count": 15,
+    "total_cost": 863607944.7500001,
+    "delayed_count": 13
+  },
+  {
+    "region": "Region I",
+    "project_count": 23,
+    "total_cost": 793316930.5500001,
+    "delayed_count": 12
+  }
+]

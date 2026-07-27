@@ -1,0 +1,50 @@
+[
+  {
+    "funding_year": "2018",
+    "project_count": 7,
+    "total_cost": 734761555.37,
+    "savings": 20556700.13000001
+  },
+  {
+    "funding_year": "2019",
+    "project_count": 2,
+    "total_cost": 108014642.65,
+    "savings": 1639261.8399999887
+  },
+  {
+    "funding_year": "2020",
+    "project_count": 9,
+    "total_cost": 561842830.5799999,
+    "savings": 98730377.58000001
+  },
+  {
+    "funding_year": "2021",
+    "project_count": 619,
+    "total_cost": 30398808667.469994,
+    "savings": 2351938560.0200005
+  },
+  {
+    "funding_year": "2022",
+    "project_count": 3335,
+    "total_cost": 164233223116.32028,
+    "savings": 6165572699.879996
+  },
+  {
+    "funding_year": "2023",
+    "project_count": 3466,
+    "total_cost": 203215928517.2798,
+    "savings": 5652034368.0599985
+  },
+  {
+    "funding_year": "2024",
+    "project_count": 2354,
+    "total_cost": 144725293322.40997,
+    "savings": 1242879595.5799994
+  },
+  {
+    "funding_year": "2025",
+    "project_count": 35,
+    "total_cost": 1450632963.6600003,
+    "savings": 17454402.059999995
+  }
+]

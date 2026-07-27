@@ -1,0 +1,32 @@
+[
+  {
+    "province": "CAMARINES SUR",
+    "project_count": 249,
+    "total_cost": 17502065545.3
+  },
+  {
+    "province": "ALBAY",
+    "project_count": 273,
+    "total_cost": 16168174428.500004
+  },
+  {
+    "province": "SORSOGON",
+    "project_count": 129,
+    "total_cost": 6451452595.129997
+  },
+  {
+    "province": "CAMARINES NORTE",
+    "project_count": 97,
+    "total_cost": 4359904004.390003
+  },
+  {
+    "province": "MASBATE",
+    "project_count": 69,
+    "total_cost": 3305591501.689999
+  },
+  {
+    "province": "CATANDUANES",
+    "project_count": 46,
+    "total_cost": 1826313169.58
+  }
+]

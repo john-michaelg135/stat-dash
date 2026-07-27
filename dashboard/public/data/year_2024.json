@@ -1,0 +1,98 @@
+[
+  {
+    "region": "Region III",
+    "project_count": 524,
+    "total_cost": 35250920545.51002,
+    "delayed_count": 251
+  },
+  {
+    "region": "Region I",
+    "project_count": 270,
+    "total_cost": 15344292540.670004,
+    "delayed_count": 102
+  },
+  {
+    "region": "National Capital Region",
+    "project_count": 273,
+    "total_cost": 15173060709.47,
+    "delayed_count": 100
+  },
+  {
+    "region": "Region II",
+    "project_count": 179,
+    "total_cost": 13833671278.050003,
+    "delayed_count": 15
+  },
+  {
+    "region": "Region IV-B",
+    "project_count": 159,
+    "total_cost": 12387637705.929998,
+    "delayed_count": 51
+  },
+  {
+    "region": "Region VII",
+    "project_count": 144,
+    "total_cost": 8712352822.02,
+    "delayed_count": 65
+  },
+  {
+    "region": "Region V",
+    "project_count": 95,
+    "total_cost": 7002206077.779999,
+    "delayed_count": 33
+  },
+  {
+    "region": "Region X",
+    "project_count": 106,
+    "total_cost": 6510672395.010002,
+    "delayed_count": 51
+  },
+  {
+    "region": "Region IV-A",
+    "project_count": 125,
+    "total_cost": 5427610366.440001,
+    "delayed_count": 59
+  },
+  {
+    "region": "Region VI",
+    "project_count": 106,
+    "total_cost": 5371078395.759999,
+    "delayed_count": 59
+  },
+  {
+    "region": "Region XIII",
+    "project_count": 62,
+    "total_cost": 5260063306.92,
+    "delayed_count": 19
+  },
+  {
+    "region": "Region VIII",
+    "project_count": 104,
+    "total_cost": 4340452857.68,
+    "delayed_count": 39
+  },
+  {
+    "region": "Region XII",
+    "project_count": 77,
+    "total_cost": 3827612942.0299997,
+    "delayed_count": 31
+  },
+  {
+    "region": "Cordillera Administrative Region",
+    "project_count": 56,
+    "total_cost": 2823864447.5799994,
+    "delayed_count": 19
+  },
+  {
+    "region": "Region XI",
+    "project_count": 37,
+    "total_cost": 2137229877.5800002,
+    "delayed_count": 20
+  },
+  {
+    "region": "Region IX",
+    "project_count": 37,
+    "total_cost": 1322567053.9800005,
+    "delayed_count": 17
+  }
+]

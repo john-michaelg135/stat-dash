@@ -1,0 +1,42 @@
+[
+  {
+    "province": "BULACAN",
+    "project_count": 668,
+    "total_cost": 43754961321.72999
+  },
+  {
+    "province": "TARLAC",
+    "project_count": 258,
+    "total_cost": 18584916133.379993
+  },
+  {
+    "province": "PAMPANGA",
+    "project_count": 292,
+    "total_cost": 14309398106.570002
+  },
+  {
+    "province": "NUEVA ECIJA",
+    "project_count": 163,
+    "total_cost": 9381476567.779997
+  },
+  {
+    "province": "ZAMBALES",
+    "project_count": 73,
+    "total_cost": 4639048547.520001
+  },
+  {
+    "province": "BATAAN",
+    "project_count": 98,
+    "total_cost": 3988567757.9099994
+  },
+  {
+    "province": "AURORA",
+    "project_count": 64,
+    "total_cost": 3089887328.27
+  },
+  {
+    "province": "LA UNION",
+    "project_count": 1,
+    "total_cost": 257255490
+  }
+]

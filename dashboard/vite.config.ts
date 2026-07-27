@@ -6,6 +6,7 @@ export default defineConfig({
   build: {
     target: "es2020",
     outDir: "../dist",
+    emptyOutDir: true,
     minify: "esbuild",
     cssMinify: true,
     rollupOptions: {

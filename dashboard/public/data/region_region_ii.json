@@ -1,0 +1,27 @@
+[
+  {
+    "province": "ISABELA",
+    "project_count": 337,
+    "total_cost": 22770663528.02998
+  },
+  {
+    "province": "CAGAYAN",
+    "project_count": 165,
+    "total_cost": 7136266880.169997
+  },
+  {
+    "province": "NUEVA VIZCAYA",
+    "project_count": 85,
+    "total_cost": 5706079741.73
+  },
+  {
+    "province": "BATANES",
+    "project_count": 32,
+    "total_cost": 422128645.98999995
+  },
+  {
+    "province": "QUIRINO",
+    "project_count": 7,
+    "total_cost": 267927833.10000002
+  }
+]

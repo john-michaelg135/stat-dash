@@ -1,0 +1,122 @@
+[
+  {
+    "province": "BULACAN",
+    "region": "Region III",
+    "project_count": 668,
+    "total_cost": 43754961321.72999
+  },
+  {
+    "province": "CEBU",
+    "region": "Region VII",
+    "project_count": 414,
+    "total_cost": 26614501059.39999
+  },
+  {
+    "province": "ISABELA",
+    "region": "Region II",
+    "project_count": 337,
+    "total_cost": 22770663528.02998
+  },
+  {
+    "province": "TARLAC",
+    "region": "Region III",
+    "project_count": 258,
+    "total_cost": 18584916133.379993
+  },
+  {
+    "province": "CAMARINES SUR",
+    "region": "Region V",
+    "project_count": 249,
+    "total_cost": 17502065545.3
+  },
+  {
+    "province": "ALBAY",
+    "region": "Region V",
+    "project_count": 273,
+    "total_cost": 16168174428.500004
+  },
+  {
+    "province": "CITY OF MANILA",
+    "region": "National Capital Region",
+    "project_count": 215,
+    "total_cost": 14459966445.269993
+  },
+  {
+    "province": "PAMPANGA",
+    "region": "Region III",
+    "project_count": 292,
+    "total_cost": 14309398106.570002
+  },
+  {
+    "province": "LEYTE",
+    "region": "Region VIII",
+    "project_count": 261,
+    "total_cost": 14157164150.540009
+  },
+  {
+    "province": "PANGASINAN",
+    "region": "Region I",
+    "project_count": 313,
+    "total_cost": 13605505190.060015
+  },
+  {
+    "province": "MISAMIS ORIENTAL",
+    "region": "Region X",
+    "project_count": 181,
+    "total_cost": 13488248391.850004
+  },
+  {
+    "province": "ORIENTAL MINDORO",
+    "region": "Region IV-B",
+    "project_count": 138,
+    "total_cost": 11253472248.52
+  },
+  {
+    "province": "NEGROS OCCIDENTAL",
+    "region": "Region VI",
+    "project_count": 208,
+    "total_cost": 11098163631.659998
+  },
+  {
+    "province": "CAVITE",
+    "region": "Region IV-A",
+    "project_count": 192,
+    "total_cost": 11006280648.390001
+  },
+  {
+    "province": "LA UNION",
+    "region": "Region I",
+    "project_count": 166,
+    "total_cost": 11005023597.74
+  },
+  {
+    "province": "DAVAO DEL SUR",
+    "region": "Region XI",
+    "project_count": 168,
+    "total_cost": 10256505031.739998
+  },
+  {
+    "province": "ILOCOS NORTE",
+    "region": "Region I",
+    "project_count": 224,
+    "total_cost": 10059321063.579998
+  },
+  {
+    "province": "AGUSAN DEL NORTE",
+    "region": "Region XIII",
+    "project_count": 89,
+    "total_cost": 9902944555.589998
+  },
+  {
+    "province": "NUEVA ECIJA",
+    "region": "Region III",
+    "project_count": 163,
+    "total_cost": 9381476567.779997
+  },
+  {
+    "province": "LAGUNA",
+    "region": "Region IV-A",
+    "project_count": 152,
+    "total_cost": 8916428145.539999
+  }
+]

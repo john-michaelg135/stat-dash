@@ -1,0 +1,27 @@
+[
+  {
+    "province": "AGUSAN DEL NORTE",
+    "project_count": 89,
+    "total_cost": 9902944555.589998
+  },
+  {
+    "province": "SURIGAO DEL NORTE",
+    "project_count": 79,
+    "total_cost": 5457200278.780001
+  },
+  {
+    "province": "SURIGAO DEL SUR",
+    "project_count": 60,
+    "total_cost": 4435063375.9400015
+  },
+  {
+    "province": "AGUSAN DEL SUR",
+    "project_count": 59,
+    "total_cost": 3728921399.899999
+  },
+  {
+    "province": "DINAGAT ISLANDS",
+    "project_count": 15,
+    "total_cost": 510864246.6
+  }
+]

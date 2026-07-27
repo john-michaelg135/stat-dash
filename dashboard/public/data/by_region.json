@@ -1,0 +1,114 @@
+[
+  {
+    "region": "Region III",
+    "project_count": 1617,
+    "total_cost": 98005511253.1599,
+    "avg_cost": 60609468.92588738,
+    "delayed_count": 861
+  },
+  {
+    "region": "National Capital Region",
+    "project_count": 1057,
+    "total_cost": 52567134350.380035,
+    "avg_cost": 49732388.22174081,
+    "delayed_count": 568
+  },
+  {
+    "region": "Region V",
+    "project_count": 863,
+    "total_cost": 49613501244.58998,
+    "avg_cost": 57489572.70520276,
+    "delayed_count": 480
+  },
+  {
+    "region": "Region IV-A",
+    "project_count": 828,
+    "total_cost": 39959471458.75998,
+    "avg_cost": 48260231.23038645,
+    "delayed_count": 513
+  },
+  {
+    "region": "Region I",
+    "project_count": 851,
+    "total_cost": 39320913924.27996,
+    "avg_cost": 46205539.27647469,
+    "delayed_count": 420
+  },
+  {
+    "region": "Region II",
+    "project_count": 626,
+    "total_cost": 36303066629.01999,
+    "avg_cost": 57992119.21568688,
+    "delayed_count": 215
+  },
+  {
+    "region": "Region VII",
+    "project_count": 614,
+    "total_cost": 36127515289.92999,
+    "avg_cost": 58839601.449397385,
+    "delayed_count": 357
+  },
+  {
+    "region": "Region IV-B",
+    "project_count": 498,
+    "total_cost": 34964323306.69,
+    "avg_cost": 70209484.55158634,
+    "delayed_count": 242
+  },
+  {
+    "region": "Region X",
+    "project_count": 428,
+    "total_cost": 27049180093.239998,
+    "avg_cost": 63199018.90943925,
+    "delayed_count": 289
+  },
+  {
+    "region": "Region VI",
+    "project_count": 502,
+    "total_cost": 24740499418.30001,
+    "avg_cost": 49283863.38306775,
+    "delayed_count": 362
+  },
+  {
+    "region": "Region XIII",
+    "project_count": 302,
+    "total_cost": 24034993856.809994,
+    "avg_cost": 79586072.37354302,
+    "delayed_count": 148
+  },
+  {
+    "region": "Region VIII",
+    "project_count": 514,
+    "total_cost": 23421056400.90997,
+    "avg_cost": 45566257.589319006,
+    "delayed_count": 290
+  },
+  {
+    "region": "Region XI",
+    "project_count": 344,
+    "total_cost": 20579498622.91,
+    "avg_cost": 59824123.90380814,
+    "delayed_count": 239
+  },
+  {
+    "region": "Cordillera Administrative Region",
+    "project_count": 352,
+    "total_cost": 17313240565.870003,
+    "avg_cost": 49185342.51667614,
+    "delayed_count": 218
+  },
+  {
+    "region": "Region XII",
+    "project_count": 299,
+    "total_cost": 15637631909.25,
+    "avg_cost": 52299772.27173913,
+    "delayed_count": 169
+  },
+  {
+    "region": "Region IX",
+    "project_count": 132,
+    "total_cost": 5790967291.64,
+    "avg_cost": 43870964.330606066,
+    "delayed_count": 88
+  }
+]

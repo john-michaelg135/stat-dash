@@ -1,0 +1,32 @@
+[
+  {
+    "province": "MISAMIS ORIENTAL",
+    "project_count": 181,
+    "total_cost": 13488248391.850004
+  },
+  {
+    "province": "BUKIDNON",
+    "project_count": 110,
+    "total_cost": 7698084068.289998
+  },
+  {
+    "province": "LANAO DEL NORTE",
+    "project_count": 59,
+    "total_cost": 2964110621.12
+  },
+  {
+    "province": "CAMIGUIN",
+    "project_count": 32,
+    "total_cost": 1320745096.51
+  },
+  {
+    "province": "MISAMIS OCCIDENTAL",
+    "project_count": 33,
+    "total_cost": 1025263900.24
+  },
+  {
+    "province": "LANAO DEL SUR",
+    "project_count": 13,
+    "total_cost": 552728015.2299999
+  }
+]

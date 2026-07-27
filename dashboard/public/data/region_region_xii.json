@@ -1,0 +1,32 @@
+[
+  {
+    "province": "SOUTH COTABATO",
+    "project_count": 86,
+    "total_cost": 3742623362.0100007
+  },
+  {
+    "province": "COTABATO (NORTH COTABATO)",
+    "project_count": 68,
+    "total_cost": 3470808115.98
+  },
+  {
+    "province": "SULTAN KUDARAT",
+    "project_count": 69,
+    "total_cost": 3298838820.0500016
+  },
+  {
+    "province": "SARANGANI",
+    "project_count": 41,
+    "total_cost": 2635984524.91
+  },
+  {
+    "province": "MAGUINDANAO DEL SUR",
+    "project_count": 22,
+    "total_cost": 1481036712.49
+  },
+  {
+    "province": "MAGUINDANAO DEL NORTE",
+    "project_count": 13,
+    "total_cost": 1008340373.81
+  }
+]

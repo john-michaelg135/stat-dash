@@ -1,0 +1,32 @@
+[
+  {
+    "province": "NEGROS OCCIDENTAL",
+    "project_count": 208,
+    "total_cost": 11098163631.659998
+  },
+  {
+    "province": "ILOILO",
+    "project_count": 167,
+    "total_cost": 7335935077.460002
+  },
+  {
+    "province": "AKLAN",
+    "project_count": 60,
+    "total_cost": 3042628550.040001
+  },
+  {
+    "province": "ANTIQUE",
+    "project_count": 36,
+    "total_cost": 1636696896.4500003
+  },
+  {
+    "province": "CAPIZ",
+    "project_count": 24,
+    "total_cost": 1225507553.7
+  },
+  {
+    "province": "GUIMARAS",
+    "project_count": 7,
+    "total_cost": 401567708.98999995
+  }
+]

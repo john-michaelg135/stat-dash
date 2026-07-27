@@ -1,0 +1,50 @@
+[
+  {
+    "region": "Region III",
+    "project_count": 12,
+    "total_cost": 565087149.9899999,
+    "delayed_count": 0
+  },
+  {
+    "region": "National Capital Region",
+    "project_count": 9,
+    "total_cost": 526582004.73,
+    "delayed_count": 5
+  },
+  {
+    "region": "Region VII",
+    "project_count": 3,
+    "total_cost": 126116700.15,
+    "delayed_count": 0
+  },
+  {
+    "region": "Region XIII",
+    "project_count": 2,
+    "total_cost": 101093157.58,
+    "delayed_count": 0
+  },
+  {
+    "region": "Region IV-B",
+    "project_count": 4,
+    "total_cost": 97669925.22,
+    "delayed_count": 0
+  },
+  {
+    "region": "Region XII",
+    "project_count": 2,
+    "total_cost": 19629973.36,
+    "delayed_count": 1
+  },
+  {
+    "region": "Region I",
+    "project_count": 2,
+    "total_cost": 9701052.629999999,
+    "delayed_count": 2
+  },
+  {
+    "region": "Region IV-A",
+    "project_count": 1,
+    "total_cost": 4753000,
+    "delayed_count": 0
+  }
+]

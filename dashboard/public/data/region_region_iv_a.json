@@ -1,0 +1,27 @@
+[
+  {
+    "province": "CAVITE",
+    "project_count": 192,
+    "total_cost": 11006280648.390001
+  },
+  {
+    "province": "LAGUNA",
+    "project_count": 152,
+    "total_cost": 8916428145.539999
+  },
+  {
+    "province": "BATANGAS",
+    "project_count": 189,
+    "total_cost": 7122707032.600002
+  },
+  {
+    "province": "QUEZON",
+    "project_count": 128,
+    "total_cost": 6468881581.710001
+  },
+  {
+    "province": "RIZAL",
+    "project_count": 167,
+    "total_cost": 6445174050.520003
+  }
+]

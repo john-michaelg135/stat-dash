@@ -1,0 +1,22 @@
+[
+  {
+    "province": "PANGASINAN",
+    "project_count": 313,
+    "total_cost": 13605505190.060015
+  },
+  {
+    "province": "LA UNION",
+    "project_count": 166,
+    "total_cost": 11005023597.74
+  },
+  {
+    "province": "ILOCOS NORTE",
+    "project_count": 224,
+    "total_cost": 10059321063.579998
+  },
+  {
+    "province": "ILOCOS SUR",
+    "project_count": 148,
+    "total_cost": 4651064072.900001
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "province": "ABRA",
+    "project_count": 105,
+    "total_cost": 7652897214.799999
+  },
+  {
+    "province": "BENGUET",
+    "project_count": 79,
+    "total_cost": 3145936564.2599993
+  },
+  {
+    "province": "MOUNTAIN PROVINCE",
+    "project_count": 44,
+    "total_cost": 1973620714.28
+  },
+  {
+    "province": "APAYAO",
+    "project_count": 34,
+    "total_cost": 1951896261.9899998
+  },
+  {
+    "province": "IFUGAO",
+    "project_count": 27,
+    "total_cost": 1441689158.97
+  },
+  {
+    "province": "KALINGA",
+    "project_count": 63,
+    "total_cost": 1147200651.57
+  }
+]

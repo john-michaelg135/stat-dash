@@ -1,0 +1,27 @@
+[
+  {
+    "province": "ZAMBOANGA DEL SUR",
+    "project_count": 62,
+    "total_cost": 2007918269.3500006
+  },
+  {
+    "province": "ZAMBOANGA DEL NORTE",
+    "project_count": 32,
+    "total_cost": 1554031731.6800003
+  },
+  {
+    "province": "ZAMBOANGA SIBUGAY",
+    "project_count": 25,
+    "total_cost": 1450367017.96
+  },
+  {
+    "province": "BASILAN",
+    "project_count": 10,
+    "total_cost": 615237200.01
+  },
+  {
+    "province": "SULU",
+    "project_count": 3,
+    "total_cost": 163413072.64
+  }
+]

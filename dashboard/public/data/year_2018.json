@@ -1,0 +1,26 @@
+[
+  {
+    "region": "Region IV-B",
+    "project_count": 4,
+    "total_cost": 216916620.86999997,
+    "delayed_count": 4
+  },
+  {
+    "region": "Region IX",
+    "project_count": 1,
+    "total_cost": 198360500,
+    "delayed_count": 1
+  },
+  {
+    "region": "Region VI",
+    "project_count": 1,
+    "total_cost": 183182224.3,
+    "delayed_count": 1
+  },
+  {
+    "region": "Region III",
+    "project_count": 1,
+    "total_cost": 136302210.2,
+    "delayed_count": 1
+  }
+]

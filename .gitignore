@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Pipeline intermediate files
+*.duckdb
+pipeline/data/_temp_projects.json
+
+# Generated dashboard data (reproduced by pipeline)
+dashboard/public/data/*.parquet
+dashboard/public/data/*.json
+
+# Raw data files (large, not needed in repo)
+flood_control.json
+flood_control_report.json
+pipeline/data/flood_control.json
+
+# Environment & OS
+.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+
+# Logs & scratch
+*.log
+concerns_logs.txt
+concerns_log.txt
+
+# Python artifacts
+__pycache__/
+*.pyc
+analyze_to_json.py
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Shell scripts (local dev convenience)
+run.sh
+
+# Lock files (optional — remove this line if you want to pin deps)
+# package-lock.json

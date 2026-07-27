@@ -1,0 +1,10 @@
+{
+  "name": "stat-dash",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flood control statistics dashboard with DuckDB pipeline and React frontend",
+  "workspaces": [
+    "pipeline",
+    "dashboard"
+  ]
+}

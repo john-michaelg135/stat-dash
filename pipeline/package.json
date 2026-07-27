@@ -1,0 +1,16 @@
+{
+  "name": "pipeline",
+  "version": "1.0.0",
+  "description": "Data ingestion and transformation pipeline using DuckDB",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "ingest": "node -e \"import('./src/ingest.js').then(m => m.ingest())\""
+  },
+  "keywords": ["duckdb", "flood-control", "data-pipeline"],
+  "license": "MIT",
+  "dependencies": {
+    "duckdb": "^1.1.0"
+  }
+}

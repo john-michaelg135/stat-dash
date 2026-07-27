@@ -10,7 +10,8 @@
   },
   "keywords": ["duckdb", "flood-control", "data-pipeline"],
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "optionalDependencies": {
     "duckdb": "^1.1.0"
   }
 }

@@ -1,7 +1,7 @@
 {
+  "installCommand": "npm install",
   "buildCommand": "npm run build -w dashboard",
   "outputDirectory": "dashboard/dist",
-  "installCommand": "npm install",
   "framework": null,
   "headers": [
     {

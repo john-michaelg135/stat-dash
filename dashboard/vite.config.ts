@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: "es2020",
-    outDir: "../dist",
+    outDir: "dist",
     emptyOutDir: true,
     minify: "esbuild",
     cssMinify: true,

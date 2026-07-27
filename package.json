@@ -8,6 +8,7 @@
     "dashboard"
   ],
   "scripts": {
-    "build": "npm run build -w dashboard"
+    "build": "npm run build -w dashboard",
+    "vercel-build": "npm run vercel-build -w dashboard"
   }
 }

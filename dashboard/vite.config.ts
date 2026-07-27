@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: "es2020",
+    outDir: process.env.VERCEL ? "../dist" : "dist",
     minify: "esbuild",
     cssMinify: true,
     rollupOptions: {

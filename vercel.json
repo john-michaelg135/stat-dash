@@ -1,6 +1,6 @@
 {
   "installCommand": "npm install",
-  "buildCommand": "npm run build -w dashboard && cp -r dashboard/dist ./dist",
+  "buildCommand": "cd dashboard && npm run build && cp -r dist ../dist",
   "outputDirectory": "dist",
   "headers": [
     {

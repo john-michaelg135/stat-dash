@@ -205,6 +205,36 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
   let lastNonEmpty = "";
 
   const subHeaderRow = rawRows[bestHeaderIdx + 1] as unknown[] | undefined;
+  let isSubHeader = false;
+  if (subHeaderRow) {
+    const nextRow = rawRows[bestHeaderIdx + 2] as unknown[] | undefined;
+    const headerNonNull = headerRow.filter((c) => c !== null && c !== undefined && String(c).trim() !== "").length;
+    const subNonNull = subHeaderRow.filter((c) => c !== null && c !== undefined && String(c).trim() !== "");
+    const subNumeric = subNonNull.filter((c) => !isNaN(Number(c)));
+    
+    // If subHeaderRow has mostly text
+    if (subNonNull.length > 0 && subNumeric.length < subNonNull.length * 0.5) {
+       // Check if there are merged cells in the header
+       const hasGaps = headerRow.includes(null) || headerRow.includes(undefined) || headerRow.includes("");
+       
+       if (headerNonNull < subNonNull.length || hasGaps) {
+           // It might be a sub-header. But let's verify it doesn't look exactly like the data row below it.
+           if (nextRow) {
+               const nextNonNull = nextRow.filter((c) => c !== null && c !== undefined && String(c).trim() !== "");
+               const nextNumeric = nextNonNull.filter((c) => !isNaN(Number(c)));
+               // If the next row has significantly more numbers, then subHeaderRow is definitely a header.
+               if (nextNumeric.length > subNumeric.length) {
+                   isSubHeader = true;
+               } else if (nextNonNull.length === 0) {
+                   // Only 2 rows in file?
+                   isSubHeader = true;
+               }
+           } else {
+               isSubHeader = true; // No more rows, assume sub-header
+           }
+       }
+    }
+  }
 
   for (let i = 0; i < headerRow.length; i++) {
     const cell = headerRow[i];
@@ -213,7 +243,7 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
     if (cellStr !== "") {
       lastNonEmpty = cellStr;
       // Check if sub-header row adds specificity (text, not numbers)
-      const subCell = subHeaderRow?.[i];
+      const subCell = isSubHeader ? subHeaderRow?.[i] : null;
       const subStr = subCell !== null && subCell !== undefined ? String(subCell).trim() : "";
       if (subStr && subStr !== cellStr && isNaN(Number(subStr))) {
         headers.push(`${cellStr} ${subStr}`);
@@ -222,7 +252,7 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
       }
     } else {
       // Empty cell — try sub-header row or use context
-      const subCell = subHeaderRow?.[i];
+      const subCell = isSubHeader ? subHeaderRow?.[i] : null;
       const subStr = subCell !== null && subCell !== undefined ? String(subCell).trim() : "";
 
       if (subStr && isNaN(Number(subStr))) {
@@ -235,14 +265,10 @@ function parseSheetIntelligently(rawRows: unknown[][], fileName: string): Parsed
     }
   }
 
-  // Determine data start: skip sub-header rows that are text
+  // Determine data start
   let dataStartIdx = bestHeaderIdx + 1;
-  if (subHeaderRow) {
-    const subNonNull = subHeaderRow.filter((c) => c !== null && c !== undefined && String(c).trim() !== "");
-    const subNumeric = subNonNull.filter((c) => !isNaN(Number(c)));
-    if (subNonNull.length > 0 && subNumeric.length < subNonNull.length * 0.5) {
-      dataStartIdx = bestHeaderIdx + 2;
-    }
+  if (isSubHeader) {
+    dataStartIdx = bestHeaderIdx + 2;
   }
 
   const rows: Record<string, unknown>[] = [];

@@ -95,7 +95,7 @@ function detectCategoryColumns(columns: string[], yearCols: Set<string>, rows: R
     const numericCount = nonEmpty.filter((v) => !isNaN(Number(v))).length;
     if (numericCount > nonEmpty.length * 0.5) return false;
     // Filter out columns where all values are very short garbage (like "s/", "6/")
-    const avgLen = nonEmpty.reduce((s, v) => s + String(v).length, 0) / nonEmpty.length;
+    const avgLen = nonEmpty.reduce((s: number, v) => s + String(v).length, 0) / nonEmpty.length;
     if (avgLen < 3) return false;
     return true;
   });
@@ -216,7 +216,7 @@ function emptyResult(fileName: string, columns: string[]): AnalysisResult {
   return {
     totalRows: 0, totalColumns: columns.length, columns: [], numericColumns: [],
     categoricalColumns: [], temporalColumns: [], kpis: [], charts: [], insights: [],
-    executiveSummary: "No data to analyze.", datasetName, filters: [], rawData: [], isPivoted: false,
+    executiveSummary: "No data to analyze.", datasetName, datasetContext: "", filters: [], rawData: [], isPivoted: false,
   };
 }
 
@@ -661,9 +661,8 @@ function generatePivotedSummary(
   rows: Record<string, unknown>[],
   yearCols: string[],
   catCols: string[],
-  fileName: string
+  _fileName: string
 ): string {
-  const datasetName = fileName.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const sorted = [...yearCols].sort();
   const parts: string[] = [];
 
@@ -1154,9 +1153,8 @@ function generateExecutiveSummary(
   numericColumns: ColumnProfile[],
   categoricalColumns: ColumnProfile[],
   temporalColumns: ColumnProfile[],
-  fileName: string
+  _fileName: string
 ): string {
-  const datasetName = fileName.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const parts: string[] = [];
 
   // Opening with dataset scope
@@ -1239,7 +1237,7 @@ function inferDatasetContext(
   datasetName: string,
   columns: string[],
   profiles: ColumnProfile[],
-  rows: Record<string, unknown>[]
+  _rows: Record<string, unknown>[]
 ): string {
   const colNames = columns.map((c) => c.toLowerCase());
   const allColStr = colNames.join(" ");

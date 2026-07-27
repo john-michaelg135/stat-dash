@@ -1,7 +1,7 @@
 {
   "installCommand": "npm install",
   "buildCommand": "npm run build",
-  "outputDirectory": "dashboard/dist",
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/assets/(.*)",
